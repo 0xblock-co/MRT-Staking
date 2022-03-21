@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body, html {
+    @apply bg-themedarkblue;
+  }
+  select option{
+    @apply bg-themedarkblue text-white;
+  }
+}
+
+@layer components {
+  .cards {
+    @apply border border-themegray rounded-3xl bg-themeblue text-white p-6;
+  }
+  .btn {
+    @apply bg-gradient-to-r from-themepurple to-themesky rounded-full py-2;
+  }
+  .input {
+    @apply flex border border-white rounded-full bg-transparent text-lg;
+  }
+  .menu {
+    @apply flex gap-4 items-center px-4 py-4 border-l-4;
+  }
+  .activemenu {
+    @apply border-themesky bg-themesky bg-opacity-20;
+  }
+  .inactivemenu {
+    @apply border-transparent;
+  }
+}
+
+.walletconnect-modal__base{
+  height: 85vh !important;
+}
+
+.walletconnect-qrcode__image{
+  width: calc(85% - 30px) !important;
+}
