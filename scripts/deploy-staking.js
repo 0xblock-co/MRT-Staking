@@ -18,7 +18,7 @@ async function main() {
   const TIME = "";
 
   const Staking = await ethers.getContractFactory("StakingMRT");
-  const staking = await upgrades.deployProxy(Staking, [TOKEN_ADDRESS, TIME]);
+  const staking = await upgrades.deployProxy(Staking, [TOKEN_ADDRESS, TIME, 86400, 90]);
 
   await staking.deployed();
 

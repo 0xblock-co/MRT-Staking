@@ -12,7 +12,7 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
 });
 
 // const PRIVATE_KEY = "YOUR ROPSTEN PRIVATE KEY";
-const PRIVATE_KEY = "0x";
+const PRIVATE_KEY = "0x98258162a0b2017d79338cd2a5062f8a5164c83026dafb6cd8b36e3aaa099494";
 
 // You need to export an object to set up your config
 // Go to https://hardhat.org/config/ to learn more

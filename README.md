@@ -16,8 +16,12 @@ Functionalities available like:
 4. Emergency exit
 5. Admin to withdraw tokens left for reward on contract
 
-Note - There is open window of 1 day after serving 90 days to claim, reinvest or withdraw the amount given to contract by user, i.e after serving 90 days, on the 91st day you can either claim, reinvest or withdraw tokens, the same goes for other days too.
+Note - 
+1. There is open window of 1 day after serving 90 days to claim, reinvest or withdraw the amount given to contract by user, i.e after serving 90 days, on the 91st day you can either claim, reinvest or withdraw tokens, the same goes for other days too.
 
+2. Deposit and Reinvest is disabled after 270th day because we give rewards based on 90 days, and total days are 360, so 360 - 270 = 90, if user joins 271st day we will not be able to give reward for 90 days as it sums upto only 89 days, so we disable depositing and reinvesting.
+
+`````Shell````
 Install dependencies:
 npm i
 

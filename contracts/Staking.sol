@@ -28,21 +28,27 @@ contract StakingMRT is Initializable, OwnableUpgradeable {
     mapping(uint256 => bool) public claimTierStatus;
     PoolInfo public poolInfo;
     uint256 public totalMRTStaked;
-    uint256 constant SECONDS_IN_DAY = 86400;
-    uint256 constant TIERS = 4;
-    uint256 constant MIN_VAULT_DAYS = 90;
-    uint256 constant MAX_VAULT_DAYS = MIN_VAULT_DAYS * TIERS;
+    uint256 SECONDS_IN_DAY;
+    uint256 TIERS;
+    uint256 MIN_VAULT_DAYS;
+    uint256 MAX_VAULT_DAYS;
 
     event depositTokens(address user, uint256 amount);
     event withdrawTokens(address user, uint256 amount);
     event claimTokens(address user, uint256 amount);
     event reinvestTokens(address user, uint256 amount);
 
-    function initialize(IERC20Upgradeable _token, uint256 _startTime)
-        public
-        initializer
-    {
+    function initialize(
+        IERC20Upgradeable _token,
+        uint256 _startTime,
+        uint256 _seconds,
+        uint256 _vault
+    ) public initializer {
         __Ownable_init();
+        SECONDS_IN_DAY = _seconds;
+        TIERS = 4;
+        MIN_VAULT_DAYS = _vault;
+        MAX_VAULT_DAYS = MIN_VAULT_DAYS * TIERS;
         poolInfo.token = _token;
         poolInfo.initializationTime = _startTime;
         poolInfo.endingTime = poolInfo.initializationTime.add(
@@ -124,7 +130,10 @@ contract StakingMRT is Initializable, OwnableUpgradeable {
     {
         uint256 balanceOnContract = poolInfo.token.balanceOf(address(this));
 
-        require(balanceOnContract >= totalMRTStaked, "Not enough reward amount");
+        require(
+            balanceOnContract >= totalMRTStaked,
+            "Not enough reward amount"
+        );
 
         uint256 eligibleAdminAmount = balanceOnContract.sub(totalMRTStaked);
 

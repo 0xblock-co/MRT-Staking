@@ -19,17 +19,17 @@ describe("Staking", function () {
   });
 
   it("Check if the contract is initialized and owner", async function () {
-    await staking.initialize(token.address, currentTime);
+    await staking.initialize(token.address, currentTime, 86400, 90);
     expect(await staking.owner()).to.equal(owner.address);
   });
 
   it("Contract should not be initialized again", async function () {
-    await staking.initialize(token.address, currentTime);
-    await expectRevert(staking.initialize(token.address, currentTime), "Initializable: contract is already initialized");
+    await staking.initialize(token.address, currentTime, 86400, 90);
+    await expectRevert(staking.initialize(token.address, currentTime, 86400, 90), "Initializable: contract is already initialized");
   });
 
   it("Deposit amount in tier-1 and check reward", async function () {
-    await staking.initialize(token.address, currentTime);
+    await staking.initialize(token.address, currentTime, 86400, 90);
     await token.approve(staking.address, 1000);
     await staking.deposit(100);
     timeIncrease = await ethers.provider.send("evm_increaseTime", [(90 * DAYSECONDS)]);
@@ -38,7 +38,7 @@ describe("Staking", function () {
   });
 
   it("Deposit amount in tier-2 and check reward", async function () {
-    await staking.initialize(token.address, currentTime);
+    await staking.initialize(token.address, currentTime, 86400, 90);
     await token.approve(staking.address, 1000);
     await staking.deposit(100);
     timeIncrease = await ethers.provider.send("evm_increaseTime", [(180 * DAYSECONDS)]);
@@ -47,7 +47,7 @@ describe("Staking", function () {
   });
 
   it("Deposit amount in tier-3 and check reward", async function () {
-    await staking.initialize(token.address, currentTime);
+    await staking.initialize(token.address, currentTime, 86400, 90);
     await token.approve(staking.address, 1000);
     await staking.deposit(100);
     timeIncrease = await ethers.provider.send("evm_increaseTime", [(270 * DAYSECONDS)]);
@@ -56,7 +56,7 @@ describe("Staking", function () {
   });
 
   it("Deposit amount after 270 days and check deposit disables", async function () {
-    await staking.initialize(token.address, currentTime);
+    await staking.initialize(token.address, currentTime, 86400, 90);
     await token.approve(staking.address, 1000);
     timeIncrease = await ethers.provider.send("evm_increaseTime", [(271 * DAYSECONDS)]);
     await ethers.provider.send("evm_mine");
@@ -64,7 +64,7 @@ describe("Staking", function () {
   });
 
   it("Deposit amount and claim tier-1 reward", async function () {
-    await staking.initialize(token.address, currentTime);
+    await staking.initialize(token.address, currentTime, 86400, 90);
     await token.transfer(user1.address, 100);
     await token.connect(user1).approve(staking.address, 100);
     await staking.connect(user1).deposit(100);
@@ -75,7 +75,7 @@ describe("Staking", function () {
   });  
 
   it("Deposit amount and claim tier-2 reward", async function () {
-    await staking.initialize(token.address, currentTime);
+    await staking.initialize(token.address, currentTime, 86400, 90);
     await token.transfer(user1.address, 100);
     await token.connect(user1).approve(staking.address, 100);
     await staking.connect(user1).deposit(100);
@@ -86,7 +86,7 @@ describe("Staking", function () {
   });
 
   it("Deposit amount and claim tier-3 reward", async function () {
-    await staking.initialize(token.address, currentTime);
+    await staking.initialize(token.address, currentTime, 86400, 90);
     await token.transfer(user1.address, 100);
     await token.connect(user1).approve(staking.address, 100);
     await staking.connect(user1).deposit(100);
@@ -98,7 +98,7 @@ describe("Staking", function () {
 
   it("Deposit amount and claim tier-4 reward", async function () {
     currentTime += 100;
-    await staking.initialize(token.address, currentTime);
+    await staking.initialize(token.address, currentTime, 86400, 90);
     await token.transfer(user1.address, 100);
     await token.connect(user1).approve(staking.address, 100);
     await staking.connect(user1).deposit(100);
@@ -109,7 +109,7 @@ describe("Staking", function () {
   });
 
   it("Deposit amount and reinvest tier-1 reward", async function () {
-    await staking.initialize(token.address, currentTime);
+    await staking.initialize(token.address, currentTime, 86400, 90);
     await token.transfer(user1.address, 100);
     await token.connect(user1).approve(staking.address, 100);
     await staking.connect(user1).deposit(100);
@@ -120,7 +120,7 @@ describe("Staking", function () {
   });
 
   it("Deposit amount and reinvest tier-2 reward", async function () {
-    await staking.initialize(token.address, currentTime);
+    await staking.initialize(token.address, currentTime, 86400, 90);
     await token.transfer(user1.address, 100);
     await token.connect(user1).approve(staking.address, 100);
     await staking.connect(user1).deposit(100);
@@ -131,7 +131,7 @@ describe("Staking", function () {
   });
 
   it("Deposit amount and reinvest tier-3 reward", async function () {
-    await staking.initialize(token.address, currentTime);
+    await staking.initialize(token.address, currentTime, 86400, 90);
     await token.transfer(user1.address, 100);
     await token.connect(user1).approve(staking.address, 100);
     await staking.connect(user1).deposit(100);
@@ -142,7 +142,7 @@ describe("Staking", function () {
   });
 
   it("Deposit amount and reinvest tier-4 reward disables", async function () {
-    await staking.initialize(token.address, currentTime);
+    await staking.initialize(token.address, currentTime, 86400, 90);
     await token.transfer(user1.address, 100);
     await token.connect(user1).approve(staking.address, 100);
     await staking.connect(user1).deposit(100);
@@ -152,7 +152,7 @@ describe("Staking", function () {
   });
 
   it("Deposit amount and withdraw with tier-1 reward", async function () {
-    await staking.initialize(token.address, currentTime);
+    await staking.initialize(token.address, currentTime, 86400, 90);
     await token.transfer(user1.address, 100);
     await token.transfer(staking.address, 100);
     await token.connect(user1).approve(staking.address, 100);
@@ -164,7 +164,7 @@ describe("Staking", function () {
   });
 
   it("Deposit amount and withdraw with tier-2 reward", async function () {
-    await staking.initialize(token.address, currentTime);
+    await staking.initialize(token.address, currentTime, 86400, 90);
     await token.transfer(user1.address, 100);
     await token.transfer(staking.address, 100);
     await token.connect(user1).approve(staking.address, 100);
@@ -176,7 +176,7 @@ describe("Staking", function () {
   });
 
   it("Deposit amount and withdraw with tier-3 reward", async function () {
-    await staking.initialize(token.address, currentTime);
+    await staking.initialize(token.address, currentTime, 86400, 90);
     await token.transfer(user1.address, 100);
     await token.transfer(staking.address, 100);
     await token.connect(user1).approve(staking.address, 100);
@@ -189,7 +189,7 @@ describe("Staking", function () {
 
   it("Deposit amount and withdraw with tier-4 reward", async function () {
     currentTime += 100;
-    await staking.initialize(token.address, currentTime);
+    await staking.initialize(token.address, currentTime, 86400, 90);
     await token.transfer(user1.address, 100);
     await token.transfer(staking.address, 100);
     await token.connect(user1).approve(staking.address, 100);
@@ -201,7 +201,7 @@ describe("Staking", function () {
   });
 
   it("Deposit amount and emergency withdraw before tier-1 reward", async function () {
-    await staking.initialize(token.address, currentTime);
+    await staking.initialize(token.address, currentTime, 86400, 90);
     await token.transfer(user1.address, 100);
     await token.transfer(staking.address, 100);
     await token.connect(user1).approve(staking.address, 100);
@@ -213,7 +213,7 @@ describe("Staking", function () {
   });
 
   it("Deposit amount and emergency withdraw before tier-2 reward", async function () {
-    await staking.initialize(token.address, currentTime);
+    await staking.initialize(token.address, currentTime, 86400, 90);
     await token.transfer(user1.address, 100);
     await token.transfer(staking.address, 100);
     await token.connect(user1).approve(staking.address, 100);
@@ -225,7 +225,7 @@ describe("Staking", function () {
   });
 
   it("Deposit amount and emergency withdraw before tier-3 reward", async function () {
-    await staking.initialize(token.address, currentTime);
+    await staking.initialize(token.address, currentTime, 86400, 90);
     await token.transfer(user1.address, 100);
     await token.transfer(staking.address, 100);
     await token.connect(user1).approve(staking.address, 100);
@@ -237,7 +237,7 @@ describe("Staking", function () {
   });
 
   it("Deposit amount and emergency withdraw before tier-4 reward", async function () {
-    await staking.initialize(token.address, currentTime);
+    await staking.initialize(token.address, currentTime, 86400, 90);
     await token.transfer(user1.address, 100);
     await token.transfer(staking.address, 100);
     await token.connect(user1).approve(staking.address, 100);
@@ -249,7 +249,7 @@ describe("Staking", function () {
   });
 
   it("Deposit amount and emergency withdraw before tier-2 reward (with claim)", async function () {
-    await staking.initialize(token.address, currentTime);
+    await staking.initialize(token.address, currentTime, 86400, 90);
     await token.transfer(user1.address, 100);
     await token.transfer(staking.address, 100);
     await token.connect(user1).approve(staking.address, 100);
@@ -264,7 +264,7 @@ describe("Staking", function () {
   });
 
   it("Deposit amount and emergency withdraw before tier-3 reward (with claim)", async function () {
-    await staking.initialize(token.address, currentTime);
+    await staking.initialize(token.address, currentTime, 86400, 90);
     await token.transfer(user1.address, 100);
     await token.transfer(staking.address, 100);
     await token.connect(user1).approve(staking.address, 100);
@@ -279,7 +279,7 @@ describe("Staking", function () {
   });
 
   it("Deposit amount and emergency withdraw before tier-4 reward (with claim)", async function () {
-    await staking.initialize(token.address, currentTime);
+    await staking.initialize(token.address, currentTime, 86400, 90);
     await token.transfer(user1.address, 100);
     await token.transfer(staking.address, 100);
     await token.connect(user1).approve(staking.address, 100);
@@ -294,7 +294,7 @@ describe("Staking", function () {
   });
 
   it("Deposit amount and emergency withdraw before tier-2 reward (with reinvest)", async function () {
-    await staking.initialize(token.address, currentTime);
+    await staking.initialize(token.address, currentTime, 86400, 90);
     await token.transfer(user1.address, 100);
     await token.transfer(staking.address, 100);
     await token.connect(user1).approve(staking.address, 100);
@@ -309,7 +309,7 @@ describe("Staking", function () {
   });
 
   it("Deposit amount and emergency withdraw before tier-3 reward (with reinvest)", async function () {
-    await staking.initialize(token.address, currentTime);
+    await staking.initialize(token.address, currentTime, 86400, 90);
     await token.transfer(user1.address, 100);
     await token.transfer(staking.address, 100);
     await token.connect(user1).approve(staking.address, 100);
@@ -324,7 +324,7 @@ describe("Staking", function () {
   });
 
   it("Deposit amount and emergency withdraw before tier-4 reward (with reinvest)", async function () {
-    await staking.initialize(token.address, currentTime);
+    await staking.initialize(token.address, currentTime, 86400, 90);
     await token.transfer(user1.address, 100);
     await token.transfer(staking.address, 100);
     await token.connect(user1).approve(staking.address, 100);
@@ -339,7 +339,7 @@ describe("Staking", function () {
   });
 
   it("Emergency withdraw rewards by admin", async function () {
-    await staking.initialize(token.address, currentTime);
+    await staking.initialize(token.address, currentTime, 86400, 90);
     await token.transfer(user1.address, 100);
     await token.transfer(staking.address, 100);
     await token.connect(user1).approve(staking.address, 100);
@@ -354,7 +354,7 @@ describe("Staking", function () {
   });
 
   it("Emergency withdraw rewards by admin more than share", async function () {
-    await staking.initialize(token.address, currentTime);
+    await staking.initialize(token.address, currentTime, 86400, 90);
     await token.transfer(user1.address, 100);
     await token.transfer(staking.address, 100);
     await token.connect(user1).approve(staking.address, 100);
@@ -368,7 +368,7 @@ describe("Staking", function () {
   });
 
   it("Deposit amount 2nd time in tier-1 and check reward", async function () {
-    await staking.initialize(token.address, currentTime);
+    await staking.initialize(token.address, currentTime, 86400, 90);
     await token.approve(staking.address, 1000);
     await staking.deposit(1);
     await staking.deposit(100);
@@ -378,7 +378,7 @@ describe("Staking", function () {
   });
 
   it("Deposit amount 2nd time in tier-2 and check reward", async function () {
-    await staking.initialize(token.address, currentTime);
+    await staking.initialize(token.address, currentTime, 86400, 90);
     await token.approve(staking.address, 1000);
     await staking.deposit(1);
     await staking.deposit(100);
@@ -388,7 +388,7 @@ describe("Staking", function () {
   });
 
   it("Deposit amount 2nd time in tier-3 and check reward", async function () {
-    await staking.initialize(token.address, currentTime);
+    await staking.initialize(token.address, currentTime, 86400, 90);
     await token.approve(staking.address, 1000);
     await staking.deposit(1);
     await staking.deposit(100);
@@ -398,7 +398,7 @@ describe("Staking", function () {
   });
 
   it("Deposit amount 2nd time after 270 days and check deposit disables", async function () {
-    await staking.initialize(token.address, currentTime);
+    await staking.initialize(token.address, currentTime, 86400, 90);
     await token.approve(staking.address, 1000);
     await staking.deposit(1);
     timeIncrease = await ethers.provider.send("evm_increaseTime", [(271 * DAYSECONDS)]);
