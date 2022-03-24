@@ -1,6 +1,7 @@
 import React, { memo, useEffect, useState } from "react";
 import { ImInfo } from "react-icons/im";
 import { toast } from "react-toastify";
+import TimerComponent from "../../common/TimerComponent";
 import {
   allowance,
   approve,
@@ -10,6 +11,7 @@ import {
   harvestToken,
   pendingTokens,
   reinvestToken,
+  stakeTime,
   stakeToken,
   totalStaked,
   uid,
@@ -33,11 +35,13 @@ const Farmcard = ({
   const [disable, setDisable] = useState(false);
   const [eligibleReward, setEligibleReward] = useState(false);
   const [eligible, setEligible] = useState(false);
+  const [withdrawStatus, setWithdrawStatus] = useState(false);
   const [amount, setAmount] = useState(0);
   const [wamount, setWithDrawAmount] = useState(0);
   const [reward, setReward] = useState(0);
   const [deposit, setDeposit] = useState([]);
   const [value, setValue] = useState(0);
+  const [staketime, setStakeTime] = useState(0);
 
   const myState = useAppSelector((state) => state);
   const login = myState?.isLogin;
@@ -61,7 +65,7 @@ const Farmcard = ({
           stakingAddress,
           web3Var
         );
-        console.log(isApproved);
+
         if (isApproved > 1) {
           setAuthorize(true);
         }
@@ -69,7 +73,7 @@ const Farmcard = ({
         setTotalBalance(tBalance);
 
         const l = await uid(stakingABI, stakingAddress, web3Var);
-        console.log("l", l);
+
         let arr = [];
         for (let i = 1; i <= l; i++) {
           if (!arr.includes(i)) arr.push(i);
@@ -83,7 +87,7 @@ const Farmcard = ({
       setTotalBalance(0);
       setReward(0);
       setStakedAmount(0);
-      setValue(0)
+      setValue(0);
       setAuthorize(false);
     }
   }, [
@@ -255,16 +259,17 @@ const Farmcard = ({
         web3Var,
         value
       );
-      console.log("R", rewards, value);
       setReward(rewards);
     }
   };
+
   const Eligiblity = async (value) => {
     if (login) {
       const val = await eligiblee(stakingABI, stakingAddress, web3Var, value);
       setEligible(val);
     }
   };
+
   const EligibilityReward = async (value) => {
     if (login) {
       const val = await eligibleeReward(
@@ -278,7 +283,6 @@ const Farmcard = ({
   };
 
   const handleChange = async (e) => {
-    alert(e.target.value);
     setValue(e.target.value);
     Eligiblity(e.target.value);
     EligibilityReward(e.target.value);
@@ -296,26 +300,22 @@ const Farmcard = ({
       e.target.value
     );
     setStakedAmount(staked);
+    const timestake = await stakeTime(
+      stakingABI,
+      stakingAddress,
+      web3Var,
+      e.target.value
+    );
+
+    console.log("hello", e.target.value);
+    const currentT = new Date().getTime();
+    setStakeTime(Number(parseInt(currentT / 1000) - timestake.timestamp));
+    setWithdrawStatus(timestake.withdrawStatus);
   };
 
   useEffect(() => {
     setWithDrawAmount(Number(stakedAmount) + Number(reward));
   }, [stakedAmount, reward]);
-
-  // useEffect(() => {
-  //   let d;
-  //   if (account.length > 0) {
-  //     d = setInterval(() => {
-  //       Eligiblity(value);
-  //       EligibilityReward(value);
-  //       Rewards(value);
-  //     }, 15000);
-  //   }
-
-  //   return () => {
-  //     clearInterval(d);
-  //   };
-  // }, [account]);
 
   setInterval(() => {
     Eligiblity(value);
@@ -331,7 +331,7 @@ const Farmcard = ({
           className="btn px-3 py-2 outline-none"
           onChange={(e) => handleChange(e)}
         >
-          <option>Select deposit</option>
+          <option value={0}>Select deposit</option>
           {deposit.map((item) => (
             <option key={item} value={item}>
               Deposit {item}
@@ -388,6 +388,26 @@ const Farmcard = ({
         </button>
       )}
       <hr></hr>
+      {value > 0 && withdrawStatus === false && (
+      <div className="flex flex-col gap-2">
+        <div className="flex justify-between">
+          <p className="uppercase text-sm">Staked Time</p>
+          <div className="relative hover-parent">
+            <ImInfo className="cursor-pointer" />
+            <div className="absolute -top-8 -right-8 hover-child">
+              <div
+                className={`px-3 py-1 shadow-lg min-w-min bg-white text-themepurple border border-white items-center rounded-md w-full flex`}
+              >
+                <h1 className="whitespace-nowrap">
+                  Time will be reset after Reinvest.
+                </h1>
+              </div>
+            </div>
+          </div>
+        </div>
+        <TimerComponent stakeTime={staketime} />
+      </div>
+      )}
       <div className="flex flex-col gap-2">
         <p className="uppercase text-sm">MRT Earned</p>
         <div className="input py-1">

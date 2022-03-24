@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import Web3 from "web3";
 import WallectConnect from "@walletconnect/client";
 import WalletConnectProvider from "@walletconnect/web3-provider";
-import { setAccounts, setLogin, setWeb3 } from "../store/mrtSlice";
+import { setAccounts, setLogin } from "../store/mrtSlice";
 import { toast } from "react-toastify";
 
 export const scrollToTop = () => {

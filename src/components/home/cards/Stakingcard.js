@@ -30,7 +30,6 @@ const Stakingcard = ({
         const tBalance = await balance(tokenABI, tokenAddress, web3Var);
         setBalance(tBalance);
         const l = await uid(stakingABI, stakingAddress, web3Var);
-        console.log("l", l);
         let sum = 0;
         for (let i = 1; i <= l; i++) {
           const rewards = await pendingTokens(
@@ -39,7 +38,6 @@ const Stakingcard = ({
             web3Var,
             i
           );
-          console.log(rewards);
           sum += rewards;
         }
         setReward(sum);

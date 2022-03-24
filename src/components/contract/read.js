@@ -107,11 +107,11 @@ export const balance = async (tokenABI, tokenAddress, web3Var) => {
     if (!account.length) {
       return 0;
     }
-console.log("gh",tokenAddress)
+
     const contract = new web3Var.eth.Contract(tokenABI, tokenAddress);
-    console.log(account[0])
+
     const tokenBalance = await contract.methods.balanceOf(account[0]).call();
-    console.log("tokenBal", tokenBalance)
+
     return web3Var.utils.fromWei(tokenBalance, "ether");
   } catch (error) {
     console.log(error)
@@ -132,6 +132,21 @@ export const totalStaked = async (stakingABI, stakingAddress, web3Var, value) =>
     return 0;
   }
 };
+
+export const stakeTime = async (stakingABI, stakingAddress, web3Var, value) => {
+  try {
+    const account = await getAccount();
+    if (!account.length) {
+      return 0;
+    }
+    const contract = new web3Var.eth.Contract(stakingABI, stakingAddress);
+    const timev = await contract.methods.userInfo(account[0], value).call();
+    return timev;
+  } catch (error) {
+    return 0;
+  }
+};
+
 
 export const pendingTokens = async (stakingABI, stakingAddress, web3Var, value) => {
   try {

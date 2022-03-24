@@ -3,7 +3,7 @@ import Headers from "./components/common/Headers";
 import Sidebar from "./components/common/Sidebar";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import React, { Suspense, useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "./components/store/store";
+import { useAppDispatch } from "./components/store/store";
 import Web3 from "web3";
 import { setAccount, setAccounts, setWeb3 } from "./components/store/mrtSlice";
 import { createProvider, disconnectWallet } from "./components/common/Common";

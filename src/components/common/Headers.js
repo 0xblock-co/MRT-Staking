@@ -11,7 +11,6 @@ import {
   copyFunction,
   createProvider,
   disconnectWallet,
-  errMsg,
   start_and_end,
 } from "./Common";
 import { useAppDispatch, useAppSelector } from "../store/store";
