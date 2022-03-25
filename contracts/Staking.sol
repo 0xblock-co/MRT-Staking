@@ -1,5 +1,5 @@
 //SPDX-License-Identifier: Unlicense
-pragma solidity ^0.8.0;
+pragma solidity =0.8.3;
 
 import "@openzeppelin/contracts-upgradeable/utils/math/SafeMathUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol";
@@ -28,10 +28,10 @@ contract StakingMRT is Initializable, OwnableUpgradeable {
     mapping(uint256 => bool) public claimTierStatus;
     PoolInfo public poolInfo;
     uint256 public totalMRTStaked;
-    uint256 SECONDS_IN_DAY;
-    uint256 TIERS;
-    uint256 MIN_VAULT_DAYS;
-    uint256 MAX_VAULT_DAYS;
+    uint256 private SECONDS_IN_DAY;
+    uint256 private TIERS;
+    uint256 private MIN_VAULT_DAYS;
+    uint256 private MAX_VAULT_DAYS;
 
     event depositTokens(address user, uint256 amount);
     event withdrawTokens(address user, uint256 amount);
@@ -44,6 +44,7 @@ contract StakingMRT is Initializable, OwnableUpgradeable {
         uint256 _seconds,
         uint256 _vault
     ) public initializer {
+        require(address(_token) != address(0), "Token cannot be zero address");
         __Ownable_init();
         SECONDS_IN_DAY = _seconds;
         TIERS = 4;

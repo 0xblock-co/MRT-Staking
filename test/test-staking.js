@@ -5,6 +5,7 @@ const { BN, expectRevert, time } = require('@openzeppelin/test-helpers');
 describe("Staking", function () {
   let staking, token, owner, user1, currentTime, timeIncrease = 0;
   const DAYSECONDS = 86400;
+  const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 
   beforeEach(async function () {
     [owner, user1] = await ethers.getSigners();
@@ -21,6 +22,10 @@ describe("Staking", function () {
   it("Check if the contract is initialized and owner", async function () {
     await staking.initialize(token.address, currentTime, 86400, 90);
     expect(await staking.owner()).to.equal(owner.address);
+  });
+
+  it("Check if the contract does not initialize with zero address", async function () {
+    await expectRevert(staking.initialize(ZERO_ADDRESS, currentTime, 86400, 90), "Token cannot be zero address");
   });
 
   it("Contract should not be initialized again", async function () {

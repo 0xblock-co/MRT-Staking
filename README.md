@@ -22,18 +22,18 @@ Note -
 2. Deposit and Reinvest is disabled after 270th day because we give rewards based on 90 days, and total days are 360, so 360 - 270 = 90, if user joins 271st day we will not be able to give reward for 90 days as it sums upto only 89 days, so we disable depositing and reinvesting.
 
 `````Shell````
-Install dependencies:
-npm i
+Install dependencies:  
+npm i  
 
-To run the demo contract:
-npx hardhat run --network NETWORK scripts/deploy-staking-demo.js
+To run the demo contract:  
+npx hardhat run --network NETWORK scripts/deploy-staking-demo.js  
 
-To run the main contract:
-npx hardhat run --network NETWORK scripts/deploy-staking.js
+To run the main contract:  
+npx hardhat run --network NETWORK scripts/deploy-staking.js  
 
-To upgrade the contract:
-npx hardhat run --network NETWORK scripts/upgrade-staking.js
+To upgrade the contract:  
+npx hardhat run --network NETWORK scripts/upgrade-staking.js  
 
-To run the testcases:
-npx hardhat node
-npx hardhat test
+To run the testcases:  
+npx hardhat node  
+npx hardhat test OR npm run test
