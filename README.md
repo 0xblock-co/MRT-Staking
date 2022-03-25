@@ -21,7 +21,7 @@ Note -
 
 2. Deposit and Reinvest is disabled after 270th day because we give rewards based on 90 days, and total days are 360, so 360 - 270 = 90, if user joins 271st day we will not be able to give reward for 90 days as it sums upto only 89 days, so we disable depositing and reinvesting.
 
-`````Shell````
+`````Shell````  
 Install dependencies:  
 npm i  
 
