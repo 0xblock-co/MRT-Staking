@@ -26,7 +26,11 @@ const Home = () => {
           />
           <Announcement />
           <Statscard />
-          <TotalValuecard />
+          <TotalValuecard
+            stakingAddress={Staking_Address}
+            tokenAddress={Token_Address}
+            tokenABI={TokenABI}
+          />
         </div>
       </div>
     </div>

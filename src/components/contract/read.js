@@ -90,12 +90,14 @@ export const harvestToken = async (stakingABI, stakingAddress, web3Var, value) =
 
 export const reinvestToken = async (stakingABI, stakingAddress, web3Var, value) => {
   try {
+    console.log("in")
     const account = await getAccount();
     if (!account.length) {
       return 0;
     }
     const contract = new web3Var.eth.Contract(stakingABI, stakingAddress);
-    return contract.methods.rewardReinvest(value).send({ from: account[0] });
+    console.log("contract",contract)
+    return contract.methods.reinvestReward(value).send({ from: account[0] });
   } catch (error) {
     throw error;
   }
@@ -111,6 +113,19 @@ export const balance = async (tokenABI, tokenAddress, web3Var) => {
     const contract = new web3Var.eth.Contract(tokenABI, tokenAddress);
 
     const tokenBalance = await contract.methods.balanceOf(account[0]).call();
+
+    return web3Var.utils.fromWei(tokenBalance, "ether");
+  } catch (error) {
+    console.log(error)
+    return 0;
+  }
+};
+
+export const totalValueLocked = async (tokenABI, tokenAddress, web3Var, stakingAddress) => {
+  try {
+    const contract = new web3Var.eth.Contract(tokenABI, tokenAddress);
+
+    const tokenBalance = await contract.methods.balanceOf(stakingAddress).call();
 
     return web3Var.utils.fromWei(tokenBalance, "ether");
   } catch (error) {

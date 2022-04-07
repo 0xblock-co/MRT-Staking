@@ -13,7 +13,7 @@ const Wallet = ({ open, close, children }) => {
     if (event.keyCode === 27) {
       close()
     }
-  }, [])
+  }, [close])
 
   React.useEffect(() => {
     document.addEventListener("keydown", escFunction);

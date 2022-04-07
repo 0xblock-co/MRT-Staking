@@ -28,21 +28,19 @@ export const useOutsideClick = (ref, containerRef, callback) => {
   };
 
   useEffect(() => {
-    containerRef.current &&
-      containerRef.current.addEventListener("click", handleClick);
-    containerRef.current &&
-      containerRef.current.addEventListener("keypress", handleClick);
+    const refValue = containerRef.current;
+    refValue && refValue.addEventListener("click", handleClick);
+    refValue && refValue.addEventListener("keypress", handleClick);
 
     return () => {
-      containerRef.current &&
-        containerRef.current.removeEventListener("click", handleClick);
+      refValue && refValue.removeEventListener("click", handleClick);
     };
   });
 };
 
 export const copyFunction = (val) => {
   navigator.clipboard.writeText(val);
-  toast.info("Copied Successfully")
+  toast.info("Copied Successfully");
 };
 
 export const createProvider = async (walletType, walletsession) => {

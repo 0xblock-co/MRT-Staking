@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from "react";
+import React, { memo, useEffect, useMemo, useState } from "react";
 import { ImInfo } from "react-icons/im";
 import { toast } from "react-toastify";
 import TimerComponent from "../../common/TimerComponent";
@@ -98,6 +98,8 @@ const Farmcard = ({
     login,
     web3Var,
     account,
+    setStakedAmount,
+    setTotalBalance
   ]);
 
   const approveStakingContract = async () => {
@@ -130,7 +132,7 @@ const Farmcard = ({
       try {
         setDisable(true);
         setLoading(true);
-        const s = await stakeToken(stakingABI, stakingAddress, amount, web3Var);
+        await stakeToken(stakingABI, stakingAddress, amount, web3Var);
         setAmount(0);
         setLoading(false);
         toast.success("Staking process complete");
@@ -162,7 +164,7 @@ const Farmcard = ({
     try {
       setDisable(true);
       setLoading(true);
-      const s = await withdraw(stakingABI, stakingAddress, web3Var, value);
+      await withdraw(stakingABI, stakingAddress, web3Var, value);
       setAmount(0);
       setLoading(false);
       toast.success("Withdraw process complete");
@@ -196,7 +198,7 @@ const Farmcard = ({
     try {
       setLoading(true);
       setDisable(true);
-      const s = await harvestToken(stakingABI, stakingAddress, web3Var, value);
+      await harvestToken(stakingABI, stakingAddress, web3Var, value);
       setLoading(false);
       toast.success("Reward Collection Successful");
       EligibilityReward();
@@ -219,9 +221,11 @@ const Farmcard = ({
 
   const reinvestStakingContract = async (value) => {
     try {
+      console.log("hellobjn");
       setLoading(true);
       setDisable(true);
-      const s = await reinvestToken(stakingABI, stakingAddress, web3Var, value);
+      await reinvestToken(stakingABI, stakingAddress, web3Var, value);
+      // console.log("reinvest", s)
       setLoading(false);
       toast.success("ReInvest Reward Successful");
       setDisable(false);
@@ -252,15 +256,11 @@ const Farmcard = ({
   };
 
   const Rewards = async (value) => {
+    let rewards = 0;
     if (login) {
-      const rewards = await pendingTokens(
-        stakingABI,
-        stakingAddress,
-        web3Var,
-        value
-      );
-      setReward(rewards);
+      rewards = await pendingTokens(stakingABI, stakingAddress, web3Var, value);
     }
+    setReward(rewards);
   };
 
   const Eligiblity = async (value) => {
@@ -313,7 +313,7 @@ const Farmcard = ({
     setWithdrawStatus(timestake.withdrawStatus);
   };
 
-  useEffect(() => {
+  useMemo(() => {
     setWithDrawAmount(Number(stakedAmount) + Number(reward));
   }, [stakedAmount, reward]);
 
@@ -321,7 +321,7 @@ const Farmcard = ({
     Eligiblity(value);
     EligibilityReward(value);
     Rewards(value);
-  }, 500000);
+  }, 60000);
 
   return (
     <div className="cards flex flex-col gap-6 md:w-96 w-80">
@@ -389,24 +389,24 @@ const Farmcard = ({
       )}
       <hr></hr>
       {value > 0 && withdrawStatus === false && (
-      <div className="flex flex-col gap-2">
-        <div className="flex justify-between">
-          <p className="uppercase text-sm">Staked Time</p>
-          <div className="relative hover-parent">
-            <ImInfo className="cursor-pointer" />
-            <div className="absolute -top-8 -right-8 hover-child">
-              <div
-                className={`px-3 py-1 shadow-lg min-w-min bg-white text-themepurple border border-white items-center rounded-md w-full flex`}
-              >
-                <h1 className="whitespace-nowrap">
-                  Time will be reset after Reinvest.
-                </h1>
+        <div className="flex flex-col gap-2">
+          <div className="flex justify-between">
+            <p className="uppercase text-sm">Staked Time</p>
+            <div className="relative hover-parent">
+              <ImInfo className="cursor-pointer" />
+              <div className="absolute -top-8 -right-8 hover-child">
+                <div
+                  className={`px-3 py-1 shadow-lg min-w-min bg-white text-themepurple border border-white items-center rounded-md w-full flex`}
+                >
+                  <h1 className="whitespace-nowrap">
+                    Time will be reset after Reinvest.
+                  </h1>
+                </div>
               </div>
             </div>
           </div>
+          <TimerComponent stakeTime={staketime} />
         </div>
-        <TimerComponent stakeTime={staketime} />
-      </div>
       )}
       <div className="flex flex-col gap-2">
         <p className="uppercase text-sm">MRT Earned</p>

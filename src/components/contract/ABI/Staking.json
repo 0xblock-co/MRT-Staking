@@ -277,6 +277,16 @@
         "internalType": "uint256",
         "name": "_startTime",
         "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_seconds",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_vault",
+        "type": "uint256"
       }
     ],
     "name": "initialize",

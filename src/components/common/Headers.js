@@ -24,8 +24,6 @@ const Headers = ({ sidenav, setSideNav }) => {
   const [open, setOpen] = useState(false);
   const [open1, setOpen1] = useState(false);
 
-  let account = 0;
-
   const handleOpen = () => {
     setOpen(true);
   };
@@ -33,9 +31,9 @@ const Headers = ({ sidenav, setSideNav }) => {
     setOpen1(true);
   };
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     setOpen(false);
-  };
+  }, [])
   const handleClose1 = () => {
     setOpen1(false);
   };
@@ -153,7 +151,7 @@ const Headers = ({ sidenav, setSideNav }) => {
         toast.error(error);
       }
     },
-    [web3Instance, dispatch, handleClose, account]
+    [web3Instance, dispatch, handleClose]
   );
 
   const mobileWallets = useMemo(
